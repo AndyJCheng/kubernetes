@@ -22,3 +22,27 @@ kubernetes是谷歌公司开源的一个容器管理平台。就是将Borg项目
 | kube-proxy | 负责为Service提供cluster内部的服务发现和负载均衡 |
 | Container Runtime| 负责镜像管理以及Pod和容器的真正运行 |
 
+### k8s安装  
+1 master  
+yum install etcd -y  
+systemctl restart etcd  
+yum install kubernetes-master  
+systemctl restart kube-apiserver.service  
+systemctl restart kube-controller-manager.service  
+systemctl restart kube-scheduler.service  
+kubectl get componentstatus  
+2 node  
+yum install kubernetes-node -y  
+systemctl start kubelet.service  
+systemctl start kube-proxy.service  
+
+kubectl delete node 127.0.0.1  
+kubectl get nodes  
+
+### flannel
+yum install flannel -y  
+创建网段，所有的docker容器都在这个网段  
+vim /etc/sysconfig/flanneld  
+etcdctl set /atomic.io/network/config '{ "Network": "172.16.0.0/16"}'  
+systemctl restart flanneld  
+systemctl restart docker  
