@@ -46,3 +46,9 @@ vim /etc/sysconfig/flanneld
 etcdctl set /atomic.io/network/config '{ "Network": "172.16.0.0/16"}'  
 systemctl restart flanneld  
 systemctl restart docker  
+
+### pod
+k8s创建pod资源,控制至少两个容器,业务容器和Pod容器,业务容器使用的是pod容器的ip  
+kubectl explain pod  
+kubectl explain pod.spec.containers  
+kubectl delete pod podname --force --grace-period=0  
