@@ -49,6 +49,15 @@ systemctl restart docker
 
 ### pod
 k8s创建pod资源,控制至少两个容器,业务容器和Pod容器,业务容器使用的是pod容器的ip  
+kubectl create -f nginx.yaml
+kubectl get pods
+kubectl describe pod podname 
 kubectl explain pod  
 kubectl explain pod.spec.containers  
 kubectl delete pod podname --force --grace-period=0  
+kubectl apply -f nginx.yaml  
+
+### Replication Controller
+保证应用能够持续运行，确保任何时间Kubernetes中都有指定数量的pod在运行，在此基础上  
+RC还提供了一些高级特性，比如滚动升级，升级回滚等.  
+rc如何和pod关联? 通过lable
