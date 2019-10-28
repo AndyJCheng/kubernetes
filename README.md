@@ -48,7 +48,11 @@ systemctl restart flanneld
 systemctl restart docker  
 
 ### pod
-k8s创建pod资源,控制至少两个容器,业务容器和Pod容器,业务容器使用的是pod容器的ip  
+k8s创建pod资源,控制至少两个容器,业务容器和Pod容器,业务容器使用的是pod容器(pause容器)的ip  
+为什么k8s会有Pod这个概念  
+1 通过Pod容器的根容器pause容器，以它的状态来代表整个容器组的状态  
+2 多个业务容器共享pause容器的ip,共享pause容器挂载的volume,解决了文件共享  
+3 kubernetes底层支持两个pod之间tcp/ip相互通信,通过采用虚拟二层网络实现,一个pod里面的容器可以另外主机上的pod容器通信   
 kubectl create -f nginx.yaml
 kubectl get pods
 kubectl describe pod podname 
@@ -60,4 +64,11 @@ kubectl apply -f nginx.yaml
 ### Replication Controller
 保证应用能够持续运行，确保任何时间Kubernetes中都有指定数量的pod在运行，在此基础上  
 RC还提供了一些高级特性，比如滚动升级，升级回滚等.  
-rc如何和pod关联? 通过lable
+rc如何和pod关联? 通过label  
+kubectl edit pod nginx  
+#滚动升级  
+kubectl rolling-update nginx -f nginx-rc2.ymal --update-period=30s  
+#回滚  
+kubectl rolling-update nginx2 -f nginx-rc.ymal --update-period=1s  
+kubectl rolling-update nginx2 nginx --rollback --update-period=1s  
+### service  
