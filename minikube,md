@@ -1,0 +1,3 @@
+# 系统内存不足，无法启动虚拟机 minikube，需要内存大小 2200 MB。
+minikube config set memory 4092
+minikube config set cpus  3
